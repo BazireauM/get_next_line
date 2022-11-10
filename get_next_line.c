@@ -6,7 +6,7 @@
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:40:24 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/09 20:16:36 by mbazirea         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:17:39 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*first_call(int *len, char *buffer, char *tmp, int fd)
 		i++;
 	}
 	free(tmp);
-	return (buffer[i]);
+	return (buffer);
 }
 
 int	line_in_buffer(char *buffer, int len)

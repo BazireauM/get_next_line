@@ -6,7 +6,7 @@
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:40:49 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/09 20:16:44 by mbazirea         ###   ########.fr       */
+/*   Updated: 2022/11/10 15:17:50 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*first_call(int *len, char *buffer, char *tmp, int fd);
 int		line_in_buffer(char *buffer, int len);
 void	*ft_calloc(size_t count, size_t size);
 char	*form_line(char *buffer, int len, char *tmp);
-void	buffer_reset_one_line(char *buffer, int len, int i);
+int		buffer_reset_one_line(char *buffer, int len, int i);
 char	*append_buffer(char *buffer, int len, char *tmp, int fd);
 
 #endif
