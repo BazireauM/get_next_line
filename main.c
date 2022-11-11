@@ -6,7 +6,7 @@
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:41:02 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/10 15:17:48 by mbazirea         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:22:39 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ int	main(void)
 
 	fd = open("test",O_RDONLY);
 	test = get_next_line(fd);
-	printf("%s\n", test);
+	printf("%s", test);
+	free(test);
+	test = get_next_line(fd);
+	printf("%s", test);
+	free(test);
 	return (0);
 }

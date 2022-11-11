@@ -6,7 +6,7 @@
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:40:53 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/10 15:17:45 by mbazirea         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:22:30 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*ft_calloc(size_t count, size_t size)
 	return (test);
 }
 
-char	*append_buffer(char *buffer, int len, char *tmp, int fd)
+char	*append_buffer(char *buffer, int *len, char *tmp, int fd)
 {
 	int		a;
 	int		i;
@@ -41,21 +41,21 @@ char	*append_buffer(char *buffer, int len, char *tmp, int fd)
 	if (!tmp)
 		return (NULL);
 	a = read(fd, tmp, BUFFER_SIZE);
-	tmp2 = malloc(sizeof(char) * len);
+	tmp2 = malloc(sizeof(char) * *len);
 	if (!tmp2)
 	{
 		free(tmp);
 		return (NULL);
 	}
 	i = 0;
-	while (i < len)
+	while (i < *len)
 	{
 		tmp2[i] = buffer[i];
 		i++;
 	}
 	free(buffer);
-	len = len + a;
-	buffer = malloc(sizeof(char) * len);
+	*len = *len + a;
+	buffer = malloc(sizeof(char) * *len);
 	if (!buffer)
 	{
 		free(tmp2);
@@ -63,13 +63,13 @@ char	*append_buffer(char *buffer, int len, char *tmp, int fd)
 		return (NULL);
 	}
 	i = 0;
-	while (i < len - a)
+	while (i < *len - a)
 	{
 		buffer[i] = tmp2[i];
 		i++;
 	}
 	a = 0;
-	while (i < len)
+	while (i < *len)
 	{
 		buffer[i] = tmp[a];
 		i++;
