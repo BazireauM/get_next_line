@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 13:40:49 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/11 14:22:45 by mbazirea         ###   ########.fr       */
+/*   Created: 2022/11/17 01:17:53 by mbazirea          #+#    #+#             */
+/*   Updated: 2022/11/17 02:53:27 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
-# include <stdio.h>
-# include <fcntl.h>
 # include <unistd.h>
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);
-char	*first_call(int *len, char *buffer, char *tmp, int fd);
-int		line_in_buffer(char *buffer, int *len);
-void	*ft_calloc(size_t count, size_t size);
-char	*form_line(char *buffer, int *len, char *tmp);
-int		buffer_reset_one_line(char *buffer, int *len, int i);
-char	*append_buffer(char *buffer, int *len, char *tmp, int fd);
+char	*search_line(int fd, char *stock);
+char	*form_line(char *stock);
+char	*supp_line(char	*stock);
+size_t	ft_strlen(char *s);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *stock, char *buffer);
 
 #endif

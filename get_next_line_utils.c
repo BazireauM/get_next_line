@@ -5,77 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 13:40:53 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/11 14:22:30 by mbazirea         ###   ########.fr       */
+/*   Created: 2022/11/17 01:15:21 by mbazirea          #+#    #+#             */
+/*   Updated: 2022/11/17 02:53:19 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t count, size_t size)
+size_t	ft_strlen(char *s)
 {
-	void	*test;
-	char	*null;
 	size_t	i;
 
-	test = malloc (count * size);
-	if (!test)
-		return (NULL);
-	null = (char *) test;
 	i = 0;
-	while (i < count * size)
-	{
-		null[i] = '\0';
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
 		i++;
-	}
-	return (test);
+	return (i);
 }
 
-char	*append_buffer(char *buffer, int *len, char *tmp, int fd)
+char	*ft_strchr(char *s, int c)
 {
-	int		a;
-	int		i;
-	char	*tmp2;
+	int	i;
 
-	tmp = malloc(sizeof(char) * BUFFER_SIZE);
-	if (!tmp)
-		return (NULL);
-	a = read(fd, tmp, BUFFER_SIZE);
-	tmp2 = malloc(sizeof(char) * *len);
-	if (!tmp2)
-	{
-		free(tmp);
-		return (NULL);
-	}
 	i = 0;
-	while (i < *len)
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
 	{
-		tmp2[i] = buffer[i];
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
 		i++;
 	}
-	free(buffer);
-	*len = *len + a;
-	buffer = malloc(sizeof(char) * *len);
-	if (!buffer)
+	return (0);
+}
+
+char	*ft_strjoin(char *stock, char *buffer)
+{
+	size_t	i;
+	size_t	b;
+	char	*final;
+
+	if (!stock)
 	{
-		free(tmp2);
-		free(tmp);
+		stock = (char *)malloc(1 * sizeof(char));
+		stock[0] = '\0';
+	}
+	if (!stock || !buffer)
 		return (NULL);
-	}
-	i = 0;
-	while (i < *len - a)
-	{
-		buffer[i] = tmp2[i];
-		i++;
-	}
-	a = 0;
-	while (i < *len)
-	{
-		buffer[i] = tmp[a];
-		i++;
-		a++;
-	}
-	free(tmp);
-	free(tmp2);
-	return (buffer);
+	final = malloc(sizeof(char) * ((ft_strlen(stock) + ft_strlen(buffer)) + 1));
+	if (final == NULL)
+		return (NULL);
+	i = -1;
+	b = 0;
+	if (stock)
+		while (stock[++i] != '\0')
+			final[i] = stock[i];
+	while (buffer[b] != '\0')
+		final[i++] = buffer[b++];
+	final[ft_strlen(stock) + ft_strlen(buffer)] = '\0';
+	free(stock);
+	return (final);
 }

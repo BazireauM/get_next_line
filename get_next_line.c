@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 13:40:24 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/11 14:22:24 by mbazirea         ###   ########.fr       */
+/*   Created: 2022/11/17 01:15:55 by mbazirea          #+#    #+#             */
+/*   Updated: 2022/11/17 02:53:17 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,138 +14,93 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	static int	len;
-	char		*tmp;
-	int			i;
+	static char	*stock;
+	char		*line;
 
-	tmp = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	stock = search_line(fd, stock);
+	if (!stock)
+		return (NULL);
+	line = form_line(stock);
+	stock = supp_line(stock);
+	return (line);
+}
+
+char	*search_line(int fd, char *stock)
+{
+	char	*buffer;
+	int		nb_read;
+
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
+		return (NULL);
+	nb_read = 1;
+	while (!ft_strchr(stock, '\n') && nb_read != 0)
 	{
-		buffer = first_call(&len, buffer, tmp, fd);
-		if (buffer == NULL)
+		nb_read = read(fd, buffer, BUFFER_SIZE);
+		if (nb_read == -1)
+		{
+			free(buffer);
 			return (NULL);
-	}
-	i = 0;
-	while (line_in_buffer(buffer, &len) != 1 || i == 0)
-	{
-		i = 1;
-		if (line_in_buffer(buffer, &len) == 1)
-		{
-			tmp = form_line(buffer, &len, tmp);
-			return (tmp);
 		}
-		else
-		{
-			buffer = append_buffer(buffer, &len, tmp, fd);
-			if (buffer == NULL)
-				return (NULL);
-		}
-	}
-	return (NULL);
-}
-
-char	*first_call(int *len, char *buffer, char *tmp, int fd)
-{
-	int	i;
-	int	a;
-
-	*len = BUFFER_SIZE;
-	tmp = ft_calloc(1, BUFFER_SIZE);
-	if (!tmp)
-		return (NULL);
-	a = read(fd, tmp, BUFFER_SIZE);
-	if (a == 0)
-	{
-		free (tmp);
-		return (NULL);
-	}
-	buffer = malloc(sizeof(char) * a);
-	if (!buffer)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	*len = a;
-	i = 0;
-	while (i < a)
-	{
-		buffer[i] = tmp[i];
-		i++;
-	}
-	free(tmp);
-	return (buffer);
-}
-
-int	line_in_buffer(char *buffer, int *len)
-{
-	int	i;
-
-	i = 0;
-	while (i < *len)
-	{
-		if (buffer[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*form_line(char *buffer, int *len, char *tmp)
-{
-	int	i;
-	int	b;
-
-	i = 0;
-	b = 0;
-	while (buffer[i] != '\n')
-		i++;
-	i++;
-	tmp = malloc(sizeof(char) * (i + 1));
-	if (!tmp)
-		return (NULL);
-	while (b < i)
-	{
-		tmp[b] = buffer[b];
-		b++;
-	}
-	tmp[b] = '\0';
-	if (buffer_reset_one_line(buffer, len, i) == 1)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	return (tmp);
-}
-
-int	buffer_reset_one_line(char *buffer, int *len, int i)
-{
-	char	*tmp;
-	int		b;
-
-	tmp = malloc(sizeof(char) * (*len - i));
-	if (!tmp)
-		return (1);
-	b = 0;
-	while (b < *len - i)
-	{
-		tmp[b] = buffer[*len + b];
-		b++;
+		buffer[nb_read] = '\0';
+		stock = ft_strjoin(stock, buffer);
 	}
 	free(buffer);
-	buffer = malloc(sizeof(char) * b);
-	if (!buffer)
+	return (stock);
+}
+
+char	*form_line(char *stock)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	if (!stock[0])
+		return (NULL);
+	while (stock[i] && stock[i] != '\n')
+		i++;
+	line = malloc(sizeof(char) * i + 2);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (stock[i] && stock[i] != '\n')
 	{
-		free(tmp);
-		return (1);
+		line[i] = stock[i];
+		i++;
 	}
-	*len = b;
+	if (stock[i] == '\n')
+	{
+		line[i] = stock[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
+char	*supp_line(char	*stock)
+{
+	int		i;
+	int		b;
+	char	*tmp;
+
+	i = 0;
+	while (stock[i] && stock[i] != '\n')
+		i++;
+	if (stock[i] == '\0')
+	{
+		free(stock);
+		return (NULL);
+	}
+	tmp = malloc(sizeof(char) * (ft_strlen(stock) - i + 1));
+	if (!tmp)
+		return (NULL);
+	i++;
 	b = 0;
-	while (b < *len)
-	{
-		buffer[b] = tmp[b];
-		b++;
-	}
-	free(tmp);
-	return (0);
+	while (stock[i])
+		tmp[b++] = stock[i++];
+	tmp[b] = '\0';
+	free(stock);
+	return (tmp);
 }
