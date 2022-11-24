@@ -6,7 +6,7 @@
 /*   By: mbazirea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 01:15:55 by mbazirea          #+#    #+#             */
-/*   Updated: 2022/11/17 02:53:17 by mbazirea         ###   ########.fr       */
+/*   Updated: 2022/11/24 03:32:37 by mbazirea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	*search_line(int fd, char *stock)
 		if (nb_read == -1)
 		{
 			free(buffer);
+			if (stock)
+				free(stock);
 			return (NULL);
 		}
 		buffer[nb_read] = '\0';
